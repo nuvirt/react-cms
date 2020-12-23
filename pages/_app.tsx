@@ -6,6 +6,9 @@ import {
   GithubMediaStore,
 } from 'react-tinacms-github'
 
+// import { BlogPostCreatorPlugin } from '../cms/BlogPostCreator'
+
+
 export default class Site extends App {
   cms: TinaCMS
 
@@ -34,9 +37,11 @@ export default class Site extends App {
         github,
       },
       /**
-       * 3. Register the Media Store
+       * 3. Register the Media Store and Plugins
        */
       media: new GithubMediaStore(github),
+      // plugins: [BlogPostCreatorPlugin],
+
       /**
        * 4. Use the Sidebar and Toolbar
        */

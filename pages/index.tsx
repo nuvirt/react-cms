@@ -3,13 +3,21 @@ import Head from 'next/head'
 
 import { getGithubPreviewProps, parseJson } from 'next-tinacms-github'
 import { GetStaticProps } from 'next'
+import { usePlugin } from 'tinacms'
+import { useGithubJsonForm, useGithubToolbarPlugins} from 'react-tinacms-github'
 
 const styles = require('./../styles/Home.module.css')
 
 
 export default function Home({ file }) {
-  const data = file.data
-  return (
+  const formOptions = {
+        label: 'Home Page',
+        fields: [{ name: 'title', component: 'text' }],
+     }  
+     const [data, form] = useGithubJsonForm(file, formOptions)
+    usePlugin(form)
+    useGithubToolbarPlugins()
+     return (
     <div className={styles.container}>
       <Head>
         <title>Create Next App</title>
