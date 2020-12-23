@@ -6,7 +6,7 @@ import {
   GithubMediaStore,
 } from 'react-tinacms-github'
 
-// import { BlogPostCreatorPlugin } from '../cms/BlogPostCreator'
+import { BlogPostCreatorPlugin } from '../cms/BlogPostCreator'
 
 
 export default class Site extends App {
@@ -19,7 +19,7 @@ export default class Site extends App {
       proxy: '/api/proxy-github',
       authCallbackRoute: '/api/create-github-access-token',
       clientId: process.env.GITHUB_CLIENT_ID,
-      baseRepoFullName: process.env.REPO_FULL_NAME, // e.g: tinacms/tinacms.org,
+      baseRepoFullName: process.env.BASE_REPO_FULL_NAME, // e.g: tinacms/tinacms.org,
       baseBranch: process.env.BASE_BRANCH, // e.g. 'master' or 'main' on newer repos
       authScope: 'repo' // normally defaults to 'public_repo'
 
@@ -40,7 +40,7 @@ export default class Site extends App {
        * 3. Register the Media Store and Plugins
        */
       media: new GithubMediaStore(github),
-      // plugins: [BlogPostCreatorPlugin],
+      plugins: [BlogPostCreatorPlugin],
 
       /**
        * 4. Use the Sidebar and Toolbar
