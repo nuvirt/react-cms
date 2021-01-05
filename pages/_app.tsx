@@ -7,6 +7,7 @@ import {
 } from 'react-tinacms-github'
 
 import { BlogPostCreatorPlugin } from '../cms/BlogPostCreator'
+import { BrowserStorageApi } from 'utils/plugins/browser-storage-api/BrowserStorageApi'
 
 
 export default class Site extends App {
@@ -35,6 +36,10 @@ export default class Site extends App {
          * 2. Register the GithubClient
          */
         github,
+        storage:
+          typeof window !== 'undefined'
+            ? new BrowserStorageApi(window.localStorage)
+            : {},
       },
       /**
        * 3. Register the Media Store and Plugins

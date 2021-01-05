@@ -1,11 +1,10 @@
 import styled from 'styled-components'
-import { NextSeo } from 'next-seo'
+// import { NextSeo } from 'next-seo'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { CloseIcon, EditIcon } from '@tinacms/icons'
-import { formatDate } from '../../utils'
+import { formatDate } from 'utils'
 import {
   Layout,
-  Hero,
   Wrapper,
   MarkdownContent,
   DocsTextWrapper,
@@ -14,7 +13,7 @@ import { InlineTextareaField } from 'react-tinacms-inline'
 import { useGithubMarkdownForm } from 'react-tinacms-github'
 import { fileToUrl } from 'utils/urls'
 import { getPageRef } from 'utils/docs/getDocProps'
-import { InlineGithubForm } from 'components/layout/InlineGithubForm'
+import { InlineGithubForm } from 'components/layout'
 const fg = require('fast-glob')
 import { Button } from 'components/ui/Button'
 import Error from 'next/error'
@@ -23,7 +22,7 @@ import { InlineWysiwyg } from 'components/inline-wysiwyg'
 import { usePlugin, useCMS } from 'tinacms'
 import { useLastEdited } from 'utils/useLastEdited'
 import { LastEdited, DocsPagination } from 'components/ui'
-import { openGraphImage } from 'utils/open-graph-image'
+// import { openGraphImage } from 'utils/open-graph-image'
 
 function BlogTemplate({ file, siteConfig, prevPage, nextPage }) {
   // fallback workaround
@@ -44,25 +43,6 @@ function BlogTemplate({ file, siteConfig, prevPage, nextPage }) {
   return (
     <InlineGithubForm form={form}>
       <Layout>
-        <NextSeo
-          title={frontmatter.title}
-          titleTemplate={'%s | ' + siteConfig.title + ' Blog'}
-          description={excerpt}
-          openGraph={{
-            title: frontmatter.title,
-            description: excerpt,
-            images: [
-              openGraphImage(
-                frontmatter.title,
-                ' | TinaCMS Blog',
-                frontmatter.author
-              ),
-            ],
-          }}
-        />
-        <Hero>
-          <InlineTextareaField name="frontmatter.title" />
-        </Hero>
         <BlogWrapper>
           <DocsTextWrapper>
             <BlogMeta>
@@ -109,10 +89,10 @@ export const getStaticProps: GetStaticProps = async function({
   const { slug } = ctx.params
 
   //TODO - move to readFile
-  const { default: siteConfig } = await import('../../content/siteConfig.json')
+  // const { default: siteConfig } = await import('../../content/siteConfig.json')
 
   const currentBlog = await getMarkdownPreviewProps(
-    `content/blog/${slug}.md`,
+    `content/patterns/${slug}/_index.md`,
     preview,
     previewData
   )
@@ -134,17 +114,27 @@ export const getStaticProps: GetStaticProps = async function({
         preview,
         previewData
       ),
-      siteConfig: { title: siteConfig.title },
+      siteConfig: { title: "site title" },
     },
   }
 }
 
 export const getStaticPaths: GetStaticPaths = async function() {
-  const blogs = await fg(`./content/blog/**/*.md`)
+  const blogs = await fg(`./content/patterns/**/_index.md`)
+
+  console.log(blogs.map(file => {
+    // console.log(file)
+    // const slug = fileToUrl(file.split('/')[3], 'patterns')
+    const slug = file.split('/')
+    return { params: { slug: slug[3] } }
+  }))
+
   return {
     paths: blogs.map(file => {
-      const slug = fileToUrl(file, 'blog')
-      return { params: { slug } }
+      // console.log(file)
+      // const slug = fileToUrl(file.split('/')[3], 'patterns')
+      const slug = file.split('/')
+      return { params: { slug: slug[3] } }
     }),
     fallback: true,
   }

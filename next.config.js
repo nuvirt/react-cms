@@ -1,6 +1,7 @@
 // const { aliasTinaDev } = require('@tinacms/webpack-helpers')
 
 // const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const withSvgr = require('next-svgr')
 
 require('dotenv').config()
 
@@ -54,4 +55,4 @@ const config = {
    },
  }
 
-module.exports = config
+module.exports = withSvgr(config)
